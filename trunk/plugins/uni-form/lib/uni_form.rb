@@ -29,24 +29,26 @@ module MarcusIrven #:nodoc:
     #   label_for('post', 'category', 'text' => 'This Category')
     #     <label for="post_category">This Category</label>
     def label_for(object_name, method, options = {})
-      ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag(options)
+      ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag2((options.delete('text') || method.to_s.humanize), options)
     end
 
     # Creates a label tag.
     #   label_tag('post_title', 'Title')
     #     <label for="post_title">Title</label>
-#    def label_tag(name, text, options = {})
-#      content_tag('label', text, { 'for' => name }.merge(options.stringify_keys))
-#    end
+   # def label_tag(name, text, options = {})
+   #   content_tag('label', text, { 'for' => name }.merge(options.stringify_keys))
+   # end
   end
 
   module LabeledInstanceTag #:nodoc:
-    def to_label_tag(options = {})
+    # def to_label_tag(options = {})
+    def to_label_tag2(text = nil, options = {})
       options = options.stringify_keys
       add_default_name_and_id(options)
       options.delete('name')
       options['for'] = options.delete('id')
-      content_tag 'label', (options.delete('required') ? "<em>*</em> " : "") + ((options.delete('text') || @method_name.humanize)), options
+      # content_tag 'label', (options.delete('required') ? "<em>*</em> " : "") + ((options.delete('text') || @method_name.humanize)), options
+      content_tag 'label', (options.delete('required') ? "<em>*</em> " : "") + text, options
     end
   end
 

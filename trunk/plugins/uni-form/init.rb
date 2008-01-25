@@ -1,4 +1,5 @@
 require 'uni_form'
+
 ActionView::Base.send                 :include, MarcusIrven::UniFormHelper
 ActionView::Helpers::InstanceTag.send :include, MarcusIrven::LabeledInstanceTag
 ActionView::Helpers::FormBuilder.send :include, MarcusIrven::FormBuilderMethods
