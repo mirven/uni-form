@@ -29,7 +29,13 @@ module MarcusIrven #:nodoc:
     #   label_for('post', 'category', 'text' => 'This Category')
     #     <label for="post_category">This Category</label>
     def label_for(object_name, method, options = {})
-      ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag2((options.delete('text') || method.to_s.humanize), options)
+      # puts "----text: " + options[:text] if options[:text]
+      # puts "----del: " + options.delete(:text) if options[:text]
+      # puts "---or:" + ((options.delete('text') || method.to_s.humanize)
+      label = options[:text] ? options[:text] : method.to_s.humanize
+      options.delete(:text)
+      ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag2(label, options)
+      # ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag2(options[:text] ? options.delete('text') : method.to_s.humanize, options)
     end
 
     # Creates a label tag.

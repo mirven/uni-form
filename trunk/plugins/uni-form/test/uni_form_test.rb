@@ -154,9 +154,9 @@ class UniFormTest < Test::Unit::TestCase
     assert_dom_equal expected, _erbout
   end
   
-  def test_label_for
-    puts label_for('post', 'category', 'text' => 'This Category')
-  end
+  # def test_label_for
+  #   puts label_for('post', 'category', 'text' => 'This Category')
+  # end
   
   def test_text_field
     _erbout = ''
@@ -172,6 +172,29 @@ class UniFormTest < Test::Unit::TestCase
         <fieldset class="blockLabels">
           <div class="ctrlHolder">
             <label for="user_first_name">First name</label>
+            <input name="user[first_name]" size="30" type="text" class="textInput" id="user_first_name" value="Marcus"/>
+          </div>
+        </fieldset>
+      </form>
+    html
+  
+    assert_dom_equal expected, _erbout
+  end
+
+  def test_text_field_with_label
+    _erbout = ''
+  
+    uni_form_for(:user, @user) do |f|
+      f.fieldset do
+        _erbout.concat f.text_field(:first_name, :label => "First")
+      end
+    end
+    
+    expected = <<-html
+      <form action="http://www.example.com" method="post" class="uniForm">
+        <fieldset class="blockLabels">
+          <div class="ctrlHolder">
+            <label for="user_first_name">First</label>
             <input name="user[first_name]" size="30" type="text" class="textInput" id="user_first_name" value="Marcus"/>
           </div>
         </fieldset>
