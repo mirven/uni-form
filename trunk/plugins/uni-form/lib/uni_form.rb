@@ -70,6 +70,7 @@ module MarcusIrven #:nodoc:
         field_classname =
           case selector
             when "text_field": "textInput"
+            when "password_field": "textInput"
             # add fileUpload to file_upload
             else ""
           end
