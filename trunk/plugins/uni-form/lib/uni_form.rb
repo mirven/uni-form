@@ -185,7 +185,8 @@ module MarcusIrven #:nodoc:
     end
     
     def info_message(options={})
-      @template.flash[:uni_message] ? @template.content_tag(:p, @template.flash[:uni_message], :id => "OKMsg") : ''
+      sym = options[:sym] || :uni_message
+      @template.flash[sym] ? @template.content_tag(:p, @template.flash[sym], :id => "OKMsg") : ''
     end
     
     def messages
