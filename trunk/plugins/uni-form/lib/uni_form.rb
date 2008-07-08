@@ -240,6 +240,7 @@ module MarcusIrven #:nodoc:
       
       wrapperClass = 'ctrlHolder'
       wrapperClass << ' col' if options.delete(:column)
+      wrapperClass << options.delete(:ctrl_class) if options.has_key? :ctrl_class
       wrapperClass << ' error' if not errors.nil?
       
       divContent << label_for(method, label_options) + field_tag
@@ -254,7 +255,7 @@ module MarcusIrven #:nodoc:
     end
     
     def clean_options(options)
-      options.reject { |key, value| key == :required or key == :label or key == :hint or key == :column }
+      options.reject { |key, value| key == :required or key == :label or key == :hint or key == :column or key == :ctrl_class}
     end
     
   end
