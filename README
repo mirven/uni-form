@@ -1,0 +1,49 @@
+UniForm
+=======
+
+A plugin for generating forms using http://sprawsm.com/uni-form
+
+Installation
+============
+
+You will need to install the uni-form stylesheets into your stylesheet folder.
+
+Javascript
+----------
+
+Depending on which Javascript library you are using in your application you will need to install the correct
+supporting Javascript file.
+
+If using JQuery (for example via JRails) then you can use the included JQuery javascript (included with the 
+base uni-form package).
+
+If using Prototype you will need to install the Prototype support javascript from http://sprawsm.com/uni-form/community/discussion/14/prototype-support-by-patrick-daether
+
+If using mootools you will need to install the javascript from
+http://sprawsm.com/uni-form/community/discussion/27/mootools-support
+
+Usage
+=====
+
+Include the Javascript file (probably in your layout):
+
+<%= javascript_include_tag 'uni-form.prototype.js' %>
+
+Include the stylesheet (again, probably in your layout):
+
+<%= stylesheet_link_tag 'uni-form', :media => "all" %>	
+
+Then, to create your form you can do the following:
+
+<% uni_form_for :user do |form| %>
+	<% form.fieldset :type => "block", :legend => "cool stuff" do %>
+		<%= form.text_field :first_name, :required => true, :label => "Your first name" %>
+		<%= form.text_field :last_name %>
+	<% end %>
+	<%= form.submit "save" %>
+<% end %>
+
+Credits
+=======
+
+Based on the original uni-form plugin by Marcus Irvin (http://github.com/mirven/uni-form/tree)
