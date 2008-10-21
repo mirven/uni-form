@@ -71,7 +71,7 @@ module UniForm #:nodoc:
           case selector
             when "text_field": "textInput"
             when "password_field": "textInput"
-            # add fileUpload to file_upload
+            when "file_upload": "fileUpload"
             else ""
           end
           
@@ -84,11 +84,20 @@ module UniForm #:nodoc:
           
         src = <<-end_src
           def #{selector}(method, options = {})
+            RAILS_DEFAULT_LOGGER.debug options.to_yaml
+            
             label_options = {}
             label_classname = "#{label_classname}"
             label_options.update(:class => label_classname) if not label_classname.blank?
             
-            render_field(method, options, super(method, clean_options(options.merge(:class => '#{field_classname}'))), label_options)            
+            if options.has_key?(:class) 
+              field_classnames = [ '#{field_classname}', options[:class] ].join(" ")
+              RAILS_DEFAULT_LOGGER.debug options[:class]
+            else
+              field_classnames = '#{field_classname}'
+            end
+            
+            render_field(method, options, super(method, clean_options(options.merge(:class => field_classnames))), label_options)            
           end
         end_src
         class_eval src, __FILE__, __LINE__
@@ -140,7 +149,7 @@ module UniForm #:nodoc:
       
       classname = options[:class]
       classname = "" if classname.nil?
-      classname << " " << (options[:type] == "inline" ? "inlineLabels" : "blockLabels")
+      classname << " " << (options[:type] == ("inline" || :inline) ? "inlineLabels" : "blockLabels")
 
       options.delete(:legend)
       options.delete(:type)
