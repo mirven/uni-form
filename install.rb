@@ -1,7 +1,5 @@
 require 'fileutils'
 
-RAILS_ROOT = File.join(File.dirname(__FILE__), '../../../')
-
 #####################################
 # Copy resource files
 #####################################
