@@ -6,21 +6,7 @@ A plugin for generating forms using http://sprawsm.com/uni-form
 Installation
 ============
 
-You will need to install the uni-form stylesheets into your stylesheet folder.
-
-Javascript
-----------
-
-Depending on which Javascript library you are using in your application you will need to install the correct
-supporting Javascript file.
-
-If using JQuery (for example via JRails) then you can use the included JQuery javascript (included with the 
-base uni-form package).
-
-If using Prototype you will need to install the Prototype support javascript from http://sprawsm.com/uni-form/community/discussion/14/prototype-support-by-patrick-daether
-
-If using mootools you will need to install the javascript from
-http://sprawsm.com/uni-form/community/discussion/27/mootools-support
+./script/plugin install git://github.com/cthiel/uni-form.git
 
 Usage
 =====
@@ -46,4 +32,6 @@ Then, to create your form you can do the following:
 Credits
 =======
 
-Based on the original uni-form plugin by Marcus Irvin (http://github.com/mirven/uni-form/tree)
+Based on the original uni-form plugin by Marcus Irvin
+(http://github.com/mirven/uni-form/tree) and
+http://github.com/thewebfellas/uni-form/tree/master
