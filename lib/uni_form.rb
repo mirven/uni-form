@@ -184,8 +184,7 @@ module UniForm #:nodoc:
         error_messages = obj.errors.full_messages.map {|msg| @template.content_tag(:li, msg) }
         @template.content_tag(:div,
           @template.content_tag(options[:header_tag] || :h3, header_message) <<
-            @template.content_tag(:p, 'There were problems with the following fields:') <<
-            @template.content_tag(:ul, error_messages),
+            @template.content_tag(:ol, error_messages),
           html
         )
       else
@@ -195,7 +194,7 @@ module UniForm #:nodoc:
     
     def info_message(options={})
       sym = options[:sym] || :uni_message
-      @template.flash[sym] ? @template.content_tag(:p, @template.flash[sym], :id => "OKMsg") : ''
+      @template.flash[sym] ? @template.content_tag(:h3, @template.flash[sym], :id => "OKMsg") : ''
     end
     
     def messages
