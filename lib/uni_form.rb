@@ -3,7 +3,7 @@ module UniForm #:nodoc:
     [:form_for, :fields_for, :form_remote_for, :remote_form_for].each do |meth|
       src = <<-end_src
         def uni_#{meth}(object_name, *args, &proc)
-          options = args.last.is_a?(Hash) ? args.pop : {}
+          options = args.extract_options!
           html_options = options.has_key?(:html) ? options[:html] : {}
           if html_options.has_key?(:class) 
             html_options[:class] << ' uniForm'
@@ -34,7 +34,7 @@ module UniForm #:nodoc:
       # puts "---or:" + ((options.delete('text') || method.to_s.humanize)
       label = options[:text] ? options[:text] : method.to_s.humanize
       options.delete(:text)
-      ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag2(label, options)
+      ActionView::Helpers::InstanceTag.new(object_name, method, self, options.delete(:object)).to_label_tag2(label, options)
       # ActionView::Helpers::InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_label_tag2(options[:text] ? options.delete('text') : method.to_s.humanize, options)
     end
 
