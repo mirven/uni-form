@@ -154,7 +154,7 @@ module UniForm #:nodoc:
       options.delete(:legend)
       options.delete(:type)
       
-      @template.concat(@template.content_tag(:fieldset, content, options.merge({ :class => classname.strip })), proc.binding)
+      @template.concat(@template.content_tag(:fieldset, content, options.merge({ :class => classname.strip })))
       
     end
 
@@ -163,7 +163,7 @@ module UniForm #:nodoc:
       
       @ctrl_group = true
       content = @template.capture(&proc)
-      @template.concat(@template.content_tag(:div, content, :class => "ctrlHolder"), proc.binding)      
+      @template.concat(@template.content_tag(:div, content, :class => "ctrlHolder"))      
       @ctrl_group = nil
     end
     
