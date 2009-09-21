@@ -6,7 +6,7 @@ A plugin for generating forms using http://sprawsm.com/uni-form
 Installation
 ============
 
-./script/plugin install git://github.com/cthiel/uni-form.git
+./script/plugin install git://github.com/mirven/uni-form.git
 
 Usage
 =====
@@ -29,9 +29,4 @@ Then, to create your form you can do the following:
 	<%= form.submit "save" %>
 <% end %>
 
-Credits
-=======
 
-Based on the original uni-form plugin by Marcus Irvin
-(http://github.com/mirven/uni-form/tree) and
-http://github.com/thewebfellas/uni-form/tree/master
