@@ -114,6 +114,25 @@ module UniForm #:nodoc:
         :class => "buttonHolder"
     end
     
+    # renders multiple checkboxes, one per field, inside an organized list
+    def check_boxes(methods, options)
+
+      ctrl_group do
+        divContent = ""
+        divContent << @template.content_tag('p', options[:label], :class => 'label') if options[:label]
+        
+        checkboxes = []
+        methods.collect do |m| 
+          checkboxes << @template.content_tag(:li, @template.content_tag(:label, "#{check_box(m[0], :supress_label => true)} #{m[1]}".html_safe))
+        end
+        
+        divContent << @template.content_tag(:ul, checkboxes.join.html_safe, :class => "blockLabels")
+        divContent << @template.content_tag('p', options[:hint], :class => 'formHint') if options[:hint]
+
+        divContent.html_safe
+      end
+    end
+    
     def radio_button(method, tag_value, options = {})
       render_field(method, options, super(method, tag_value, options))
     end
@@ -251,19 +270,20 @@ module UniForm #:nodoc:
       wrapperClass << options.delete(:ctrl_class) if options.has_key? :ctrl_class
       wrapperClass << ' error' if not errors.blank?
       
-      divContent << label_for(method, label_options) + field_tag
+      divContent << label_for(method, label_options) unless options[:supress_label]
+      divContent << field_tag
       divContent << @template.content_tag('p', hint, :class => 'formHint') if not hint.blank?
             
             
-      if not @ctrl_group
-        @template.content_tag('div', divContent.html_safe, :class => wrapperClass)
+      if @ctrl_group.nil?
+        @template.content_tag(options[:ctrl_holder_type] || 'div', divContent.html_safe, :class => wrapperClass)
       else
         divContent.html_safe
       end
     end
     
     def clean_options(options)
-      options.reject { |key, value| [:required, :label, :hint, :column, :ctrl_class].include?(key) }
+      options.reject { |key, value| [:required, :label, :hint, :column, :ctrl_class, :supress_label].include?(key) }
     end
     
   end
