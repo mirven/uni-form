@@ -69,15 +69,15 @@ module UniForm #:nodoc:
       
         field_classname =
           case selector
-            when "text_field": "textInput"
-            when "password_field": "textInput"
-            when "file_upload": "fileUpload"
+            when "text_field" then "textInput"
+            when "password_field" then "textInput"
+            when "file_upload" then "fileUpload"
             else ""
           end
           
         label_classname =
           case selector
-            when "check_box", "radio_button": "inlineLabel"
+            when "check_box", "radio_button" then "inlineLabel"
             else ""
           end
           
