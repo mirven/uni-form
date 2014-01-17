@@ -54,7 +54,7 @@ module UniForm #:nodoc:
       options.delete('name')
       options['for'] = options.delete('id')
       # content_tag 'label', (options.delete('required') ? "<em>*</em> " : "") + ((options.delete('text') || @method_name.humanize)), options
-      content_tag 'label', (options.delete('required') ? "<em>*</em> " : "") + text, options
+      content_tag 'label', (options.delete('required') ? "<em>*</em> ".html_safe : "") + text, options
     end
   end
 
@@ -69,15 +69,15 @@ module UniForm #:nodoc:
       
         field_classname =
           case selector
-            when "text_field": "textInput"
-            when "password_field": "textInput"
-            when "file_upload": "fileUpload"
+            when "text_field" then "textInput"
+            when "password_field" then "textInput"
+            when "file_upload" then "fileUpload"
             else ""
           end
           
         label_classname =
           case selector
-            when "check_box", "radio_button": "inlineLabel"
+            when "check_box", "radio_button" then "inlineLabel"
             else ""
           end
           
@@ -110,8 +110,27 @@ module UniForm #:nodoc:
       end
 
       @template.content_tag :div, 
-        @template.content_tag(:button, value, { "type" => "submit", "name" => "commit", :class => "submitButton"}.update(options.stringify_keys)), 
+        @template.content_tag(:button, value, { "type" => "submit", "name" => "commit", :class => "submitButton primaryAction"}.update(options.stringify_keys)), 
         :class => "buttonHolder"
+    end
+    
+    # renders multiple checkboxes, one per field, inside an organized list
+    def check_boxes(methods, options)
+
+      ctrl_group do
+        divContent = ""
+        divContent << @template.content_tag('p', options[:label], :class => 'label') if options[:label]
+        
+        checkboxes = []
+        methods.collect do |m| 
+          checkboxes << @template.content_tag(:li, @template.content_tag(:label, "#{check_box(m[0], :supress_label => true)} #{m[1]}".html_safe))
+        end
+        
+        divContent << @template.content_tag(:ul, checkboxes.join.html_safe, :class => "blockLabels")
+        divContent << @template.content_tag('p', options[:hint], :class => 'formHint') if options[:hint]
+
+        divContent.html_safe
+      end
     end
     
     def radio_button(method, tag_value, options = {})
@@ -154,7 +173,7 @@ module UniForm #:nodoc:
       options.delete(:legend)
       options.delete(:type)
       
-      @template.concat(@template.content_tag(:fieldset, content, options.merge({ :class => classname.strip })))
+      @template.content_tag(:fieldset, content, options.merge({ :class => classname.strip }))
       
     end
 
@@ -242,28 +261,29 @@ module UniForm #:nodoc:
       hint = options.delete :hint
             
       obj = @object || @template.instance_variable_get("@#{@object_name}")
-      errors = obj.errors.on(method)
+      errors = obj.errors[method]
       
-      divContent = errors.nil? ? "" : @template.content_tag('p', errors.class == Array ? errors.first : errors, :class => "errorField")
+      divContent = errors.blank? ? "" : @template.content_tag('p', errors.class == Array ? errors.first : errors, :class => "errorField")
       
       wrapperClass = 'ctrlHolder'
       wrapperClass << ' col' if options.delete(:column)
       wrapperClass << options.delete(:ctrl_class) if options.has_key? :ctrl_class
-      wrapperClass << ' error' if not errors.nil?
+      wrapperClass << ' error' if not errors.blank?
       
-      divContent << label_for(method, label_options) + field_tag
+      divContent << label_for(method, label_options) unless options[:supress_label]
+      divContent << field_tag
       divContent << @template.content_tag('p', hint, :class => 'formHint') if not hint.blank?
             
             
-      if not @ctrl_group
-        @template.content_tag('div', divContent, :class => wrapperClass)
+      if @ctrl_group.nil?
+        @template.content_tag(options[:ctrl_holder_type] || 'div', divContent.html_safe, :class => wrapperClass)
       else
-        divContent
+        divContent.html_safe
       end
     end
     
     def clean_options(options)
-      options.reject { |key, value| key == :required or key == :label or key == :hint or key == :column or key == :ctrl_class}
+      options.reject { |key, value| [:required, :label, :hint, :column, :ctrl_class, :supress_label].include?(key) }
     end
     
   end

@@ -2,11 +2,12 @@ UniForm
 =======
 
 A plugin for generating forms using http://sprawsm.com/uni-form
+This fork is compatible with Rails 3!
 
 Installation
 ============
 
-./script/plugin install git://github.com/mirven/uni-form.git
+./script/plugin install git://github.com/herval/uni-form.git
 
 Usage
 =====
